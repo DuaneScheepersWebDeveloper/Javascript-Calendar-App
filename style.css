@@ -113,7 +113,7 @@ button {
   border: 2px solid red;
 }
 #cancelButton, #deleteButton {
-  background-color: #111;
+  background-color: red;
 }
 #saveButton, #closeButton {
   background-color: #111;

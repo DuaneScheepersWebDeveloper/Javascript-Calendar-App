@@ -57,22 +57,30 @@ const newEventModal = document.querySelector('#newEventModal');
 const deleteEventModal = document.querySelector('#deleteEventModal');
 const backDrop = document.querySelector('#modalBackDrop');
 const eventTitleInput = document.querySelector('#eventTitleInput');
+//----------------------------------------------------------------
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
 //----------------------------------------------------------------
 const createCalender=()=> {
-  const current = new Date();
+  const current = new Date(); // get the date from the Date object for the calenders 
 
   if (count !== 0) {
-    current.setMonth(new Date().getMonth() + count);
+    current.setMonth(current.getMonth() + count);
   }
 
   const day = current.getDate();
   const month = current.getMonth();
   const year = current.getFullYear();
 
+  //-------------------------
   const firstDayOfMonth = new Date(year, month, 1);
+  console.log(firstDayOfMonth);
+
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+  console.log("there are "+ daysInMonth +" in the month");
+  
+//⁡⁢⁢⁢@daysInMonth. the last variable in the Date object is the day . 0 is the first day of the month⁡
+//⁡⁢⁢⁢@firstDayOfMonth. by adding 1 to month we are actually going to the next month⁡⁡
+  
   const options={
     weekday: 'long',
     year: 'numeric',
@@ -80,22 +88,35 @@ const createCalender=()=> {
     day: 'numeric',
     timeZone: "Africa/Johannesburg",
   };
-  const dateString = firstDayOfMonth.toLocaleDateString('en-ZA', options);
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
 
+  const dateString = firstDayOfMonth.toLocaleDateString('en-ZA', options);
+  console.log("the date string is "+dateString); // Saturday, 2023/04/01
+
+  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+ 
+  // ⁡⁢⁢⁢@paddingDays is the number of days that don't show in our calendar⁡
+
+  //-------------------------
   document.getElementById('monthDisplay').innerText = 
     `${current.toLocaleDateString('en-ZA', { month: 'long' })} ${year}`;
 
   calendar.innerHTML = '';
 
   for(let i = 1; i <= paddingDays + daysInMonth; i++) {
+    //⁡⁢⁢⁢reason why I'm adding the padding days is so I can render⁡
+    //⁡⁢⁢⁢empty squares on the screen.⁡
+    
     const daySquare = document.createElement('div');
     daySquare.classList.add('day');
 
     const dayString = `${month + 1}/${i - paddingDays}/${year}`;
 
     if (i > paddingDays) {
+
       daySquare.innerText = i - paddingDays;
+      // ⁡⁢⁢⁢this is going to allow us to know what day we are on⁡
+      
+      //⁡⁢⁢⁢this allows to know what is today RIGHT KNOW⁡
       const eventForDay = events.find(e => e.date === dayString);
 
       if (i - paddingDays === day && count === 0) {
@@ -129,11 +150,10 @@ const openModal=(date)=> {
   } else {
     newEventModal.style.display = 'block';
   }
-
   backDrop.style.display = 'block';
 }
 //----------------------------------------------------------------
-const closeModal=()=> {
+const closeModal=()=> { 
   eventTitleInput.classList.remove('error');
   newEventModal.style.display = 'none';
   deleteEventModal.style.display = 'none';
